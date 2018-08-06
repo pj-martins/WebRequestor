@@ -83,7 +83,7 @@ namespace PaJaMa.WebRequestor
 					else
 						req.Headers.Add(header.Name, header.Value);
 				}
-				if (!string.IsNullOrEmpty(txtRequestBody.Text))
+				if (cboMethod.Text != "GET" && !string.IsNullOrEmpty(txtRequestBody.Text))
 				{
 					var stream = req.GetRequestStream();
 					var bytes = Common.Common.GetBytesFromString(txtRequestBody.Text);
@@ -224,6 +224,11 @@ namespace PaJaMa.WebRequestor
 		private void gridRequestsResponses_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
 		{
 			SettingsHelper.SaveUserSettings<List<RequestResponse>>(_requestResponseHistory.ToList(), REQUEST_RESPONSE_HISTORY);
+		}
+
+		private void cboMethod_TextChanged(object sender, EventArgs e)
+		{
+			txtRequestBody.Enabled = cboMethod.Text != "GET";
 		}
 	}
 }

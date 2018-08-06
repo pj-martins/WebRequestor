@@ -277,6 +277,7 @@
 			this.cboMethod.Size = new System.Drawing.Size(121, 21);
 			this.cboMethod.TabIndex = 0;
 			this.cboMethod.Text = "GET";
+			this.cboMethod.TextChanged += new System.EventHandler(this.cboMethod_TextChanged);
 			// 
 			// frmMain
 			// 
