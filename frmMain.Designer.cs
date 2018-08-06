@@ -102,6 +102,8 @@
 			this.gridRequestsResponses.Size = new System.Drawing.Size(238, 465);
 			this.gridRequestsResponses.TabIndex = 0;
 			this.gridRequestsResponses.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridRequestsResponses_CellDoubleClick);
+			this.gridRequestsResponses.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.gridRequestsResponses_CellFormatting);
+			this.gridRequestsResponses.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.gridRequestsResponses_RowsRemoved);
 			// 
 			// URL
 			// 

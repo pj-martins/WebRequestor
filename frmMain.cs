@@ -30,6 +30,10 @@ namespace PaJaMa.WebRequestor
 			FormSettings.LoadSettings(this);
 			gridRequestsResponses.AutoGenerateColumns = false;
 			var requestResponseHistory = SettingsHelper.GetUserSettings<List<RequestResponse>>(REQUEST_RESPONSE_HISTORY).OrderByDescending(r => r.RequestDate).ToList() ?? new List<RequestResponse>();
+			foreach (var rh in requestResponseHistory)
+			{
+				if (rh.StatusCode < 0) rh.StatusCode = 0;
+			}
 			if (requestResponseHistory.Any())
 			{
 				var first = requestResponseHistory.First();
@@ -52,12 +56,15 @@ namespace PaJaMa.WebRequestor
 			FormSettings.SaveSettings(this);
 		}
 
-		private void btnGO_Click(object sender, EventArgs e)
+		private async void btnGO_Click(object sender, EventArgs e)
 		{
 			var reqResp = new RequestResponse();
 			reqResp.URL = txtURL.Text;
 			reqResp.RequestBody = txtRequestBody.Text;
 			reqResp.Method = cboMethod.Text;
+			reqResp.RequestDate = DateTime.Now;
+			reqResp.StatusCode = -1;
+			_requestResponseHistory.Insert(0, reqResp);
 			HttpWebResponse response = null;
 			try
 			{
@@ -80,7 +87,7 @@ namespace PaJaMa.WebRequestor
 					stream.Write(bytes, 0, bytes.Length);
 					stream.Close();
 				}
-				response = (HttpWebResponse)req.GetResponse();
+				response = (HttpWebResponse)await req.GetResponseAsync();
 			}
 			catch (WebException we)
 			{
@@ -112,8 +119,7 @@ namespace PaJaMa.WebRequestor
 				txtResponseBody.Text = reqResp.ResponseBody;
 			}
 
-			reqResp.RequestDate = DateTime.Now;
-			_requestResponseHistory.Insert(0, reqResp);
+			gridRequestsResponses.Invalidate();
 			SettingsHelper.SaveUserSettings<List<RequestResponse>>(_requestResponseHistory.ToList(), REQUEST_RESPONSE_HISTORY);
 
 			tabRequestResponse.SelectedTab = pageResponse;
@@ -140,6 +146,28 @@ namespace PaJaMa.WebRequestor
 					txtResponseBody.Text = rr.ResponseBody;
 				}
 			}
+		}
+
+		private void gridRequestsResponses_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+		{
+			if (e.RowIndex >= 0)
+			{
+				var rr = gridRequestsResponses.Rows[e.RowIndex].DataBoundItem as RequestResponse;
+				e.CellStyle.Font = new Font(e.CellStyle.Font, FontStyle.Bold);
+				if (rr.StatusCode == 0)
+					e.CellStyle.ForeColor = Color.Gray;
+				else if (rr.StatusCode >= 400 && rr.StatusCode < 500)
+					e.CellStyle.ForeColor = Color.DarkRed;
+				else if (rr.StatusCode >= 500)
+					e.CellStyle.ForeColor = Color.Red;
+				else
+					e.CellStyle.ForeColor = Color.Blue;
+			}
+		}
+
+		private void gridRequestsResponses_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+		{
+			SettingsHelper.SaveUserSettings<List<RequestResponse>>(_requestResponseHistory.ToList(), REQUEST_RESPONSE_HISTORY);
 		}
 	}
 }
