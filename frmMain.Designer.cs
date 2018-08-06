@@ -189,7 +189,7 @@
 			this.pageResponse.Location = new System.Drawing.Point(4, 22);
 			this.pageResponse.Name = "pageResponse";
 			this.pageResponse.Padding = new System.Windows.Forms.Padding(3);
-			this.pageResponse.Size = new System.Drawing.Size(573, 439);
+			this.pageResponse.Size = new System.Drawing.Size(573, 472);
 			this.pageResponse.TabIndex = 1;
 			this.pageResponse.Text = "Response";
 			this.pageResponse.UseVisualStyleBackColor = true;
@@ -208,8 +208,8 @@
 			// splitContainer4.Panel2
 			// 
 			this.splitContainer4.Panel2.Controls.Add(this.txtResponseBody);
-			this.splitContainer4.Size = new System.Drawing.Size(567, 433);
-			this.splitContainer4.SplitterDistance = 147;
+			this.splitContainer4.Size = new System.Drawing.Size(567, 466);
+			this.splitContainer4.SplitterDistance = 158;
 			this.splitContainer4.TabIndex = 1;
 			// 
 			// gridResponseHeaders
@@ -221,7 +221,7 @@
 			this.gridResponseHeaders.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.gridResponseHeaders.Location = new System.Drawing.Point(0, 0);
 			this.gridResponseHeaders.Name = "gridResponseHeaders";
-			this.gridResponseHeaders.Size = new System.Drawing.Size(567, 147);
+			this.gridResponseHeaders.Size = new System.Drawing.Size(567, 158);
 			this.gridResponseHeaders.TabIndex = 0;
 			// 
 			// txtResponseBody
@@ -229,7 +229,7 @@
 			this.txtResponseBody.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.txtResponseBody.Location = new System.Drawing.Point(0, 0);
 			this.txtResponseBody.Name = "txtResponseBody";
-			this.txtResponseBody.Size = new System.Drawing.Size(567, 282);
+			this.txtResponseBody.Size = new System.Drawing.Size(567, 304);
 			this.txtResponseBody.TabIndex = 0;
 			this.txtResponseBody.Text = "";
 			// 

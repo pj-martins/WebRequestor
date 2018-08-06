@@ -6,11 +6,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace PaJaMa.WebRequestor
 {
@@ -66,6 +68,7 @@ namespace PaJaMa.WebRequestor
 			reqResp.StatusCode = -1;
 			_requestResponseHistory.Insert(0, reqResp);
 			HttpWebResponse response = null;
+			Exception exception = null;
 			try
 			{
 				var req = WebRequest.Create(txtURL.Text);
@@ -92,37 +95,88 @@ namespace PaJaMa.WebRequestor
 			catch (WebException we)
 			{
 				response = (HttpWebResponse)we.Response;
+				if (response == null) exception = we;
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show(ex.Message);
+				exception = ex;
 			}
 
-			if (response == null) return;
-
-			reqResp.StatusCode = (int)response.StatusCode;
-			// reqResp.Body = response.StatusDescription;
-			reqResp.ResponseBody = Common.Common.GetStringFromStream(response.GetResponseStream()).Trim('\0').Trim();
-			foreach (var k in response.Headers.AllKeys)
+			if (exception != null)
 			{
-				reqResp.ResponseHeaders.Add(new Header() { Name = k, Value = response.Headers[k] });
+				reqResp.StatusCode = 0;
+				reqResp.ResponseBody = exception.Message;
+			}
+			else if (response != null)
+			{
+				reqResp.StatusCode = (int)response.StatusCode;
+				// reqResp.Body = response.StatusDescription;
+				reqResp.ResponseBody = Common.Common.GetStringFromStream(response.GetResponseStream()).Trim('\0').Trim();
+				foreach (var k in response.Headers.AllKeys)
+				{
+					reqResp.ResponseHeaders.Add(new Header() { Name = k, Value = response.Headers[k] });
+				}
+
+				gridResponseHeaders.DataSource = reqResp.ResponseHeaders;
 			}
 
-			gridResponseHeaders.DataSource = reqResp.ResponseHeaders;
 			try
 			{
 				var obj = JsonConvert.DeserializeObject(reqResp.ResponseBody);
-				txtResponseBody.Text = JsonConvert.SerializeObject(obj, Formatting.Indented);
+				txtResponseBody.Text = JsonConvert.SerializeObject(obj, Newtonsoft.Json.Formatting.Indented);
 			}
 			catch
 			{
-				txtResponseBody.Text = reqResp.ResponseBody;
+				txtResponseBody.Text = PrintXML(reqResp.ResponseBody);
 			}
 
 			gridRequestsResponses.Invalidate();
 			SettingsHelper.SaveUserSettings<List<RequestResponse>>(_requestResponseHistory.ToList(), REQUEST_RESPONSE_HISTORY);
 
 			tabRequestResponse.SelectedTab = pageResponse;
+		}
+
+		private string PrintXML(string xml)
+		{
+			string result = "";
+
+			MemoryStream mStream = new MemoryStream();
+			XmlTextWriter writer = new XmlTextWriter(mStream, Encoding.Unicode);
+			XmlDocument document = new XmlDocument();
+
+			try
+			{
+				// Load the XmlDocument with the XML.
+				document.LoadXml(xml);
+
+				writer.Formatting = System.Xml.Formatting.Indented;
+
+				// Write the XML into a formatting XmlTextWriter
+				document.WriteContentTo(writer);
+				writer.Flush();
+				mStream.Flush();
+
+				// Have to rewind the MemoryStream in order to read
+				// its contents.
+				mStream.Position = 0;
+
+				// Read MemoryStream contents into a StreamReader.
+				StreamReader sReader = new StreamReader(mStream);
+
+				// Extract the text from the StreamReader.
+				string formattedXml = sReader.ReadToEnd();
+
+				result = formattedXml;
+			}
+			catch (XmlException)
+			{
+				return xml;
+			}
+
+			mStream.Close();
+			writer.Close();
+
+			return result;
 		}
 
 		private void gridRequestsResponses_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -139,11 +193,11 @@ namespace PaJaMa.WebRequestor
 				try
 				{
 					var obj = JsonConvert.DeserializeObject(rr.ResponseBody);
-					txtResponseBody.Text = JsonConvert.SerializeObject(obj, Formatting.Indented);
+					txtResponseBody.Text = JsonConvert.SerializeObject(obj, Newtonsoft.Json.Formatting.Indented);
 				}
 				catch
 				{
-					txtResponseBody.Text = rr.ResponseBody;
+					txtResponseBody.Text = PrintXML(rr.ResponseBody);
 				}
 			}
 		}
