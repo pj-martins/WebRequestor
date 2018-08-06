@@ -154,7 +154,9 @@ namespace PaJaMa.WebRequestor
 			{
 				var rr = gridRequestsResponses.Rows[e.RowIndex].DataBoundItem as RequestResponse;
 				e.CellStyle.Font = new Font(e.CellStyle.Font, FontStyle.Bold);
-				if (rr.StatusCode == 0)
+				if (rr.StatusCode < 0)
+					e.CellStyle.ForeColor = Color.LightGray;
+				else if (rr.StatusCode == 0)
 					e.CellStyle.ForeColor = Color.Gray;
 				else if (rr.StatusCode >= 400 && rr.StatusCode < 500)
 					e.CellStyle.ForeColor = Color.DarkRed;

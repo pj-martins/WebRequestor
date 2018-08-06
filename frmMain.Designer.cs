@@ -43,7 +43,6 @@
 			this.splitContainer4 = new System.Windows.Forms.SplitContainer();
 			this.gridResponseHeaders = new System.Windows.Forms.DataGridView();
 			this.txtResponseBody = new System.Windows.Forms.RichTextBox();
-			this.panel1 = new System.Windows.Forms.Panel();
 			this.btnGO = new System.Windows.Forms.Button();
 			this.panel2 = new System.Windows.Forms.Panel();
 			this.txtURL = new System.Windows.Forms.TextBox();
@@ -66,7 +65,6 @@
 			this.splitContainer4.Panel2.SuspendLayout();
 			this.splitContainer4.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.gridResponseHeaders)).BeginInit();
-			this.panel1.SuspendLayout();
 			this.panel2.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -83,7 +81,7 @@
 			// splitContainer1.Panel2
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.tabRequestResponse);
-			this.splitContainer1.Size = new System.Drawing.Size(823, 465);
+			this.splitContainer1.Size = new System.Drawing.Size(823, 498);
 			this.splitContainer1.SplitterDistance = 238;
 			this.splitContainer1.TabIndex = 0;
 			// 
@@ -99,7 +97,7 @@
 			this.gridRequestsResponses.Location = new System.Drawing.Point(0, 0);
 			this.gridRequestsResponses.Name = "gridRequestsResponses";
 			this.gridRequestsResponses.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.gridRequestsResponses.Size = new System.Drawing.Size(238, 465);
+			this.gridRequestsResponses.Size = new System.Drawing.Size(238, 498);
 			this.gridRequestsResponses.TabIndex = 0;
 			this.gridRequestsResponses.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridRequestsResponses_CellDoubleClick);
 			this.gridRequestsResponses.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.gridRequestsResponses_CellFormatting);
@@ -134,7 +132,7 @@
 			this.tabRequestResponse.Location = new System.Drawing.Point(0, 0);
 			this.tabRequestResponse.Name = "tabRequestResponse";
 			this.tabRequestResponse.SelectedIndex = 0;
-			this.tabRequestResponse.Size = new System.Drawing.Size(581, 465);
+			this.tabRequestResponse.Size = new System.Drawing.Size(581, 498);
 			this.tabRequestResponse.TabIndex = 1;
 			// 
 			// pageRequest
@@ -143,7 +141,7 @@
 			this.pageRequest.Location = new System.Drawing.Point(4, 22);
 			this.pageRequest.Name = "pageRequest";
 			this.pageRequest.Padding = new System.Windows.Forms.Padding(3);
-			this.pageRequest.Size = new System.Drawing.Size(573, 439);
+			this.pageRequest.Size = new System.Drawing.Size(573, 472);
 			this.pageRequest.TabIndex = 0;
 			this.pageRequest.Text = "Request";
 			this.pageRequest.UseVisualStyleBackColor = true;
@@ -162,8 +160,8 @@
 			// splitContainer2.Panel2
 			// 
 			this.splitContainer2.Panel2.Controls.Add(this.txtRequestBody);
-			this.splitContainer2.Size = new System.Drawing.Size(567, 433);
-			this.splitContainer2.SplitterDistance = 147;
+			this.splitContainer2.Size = new System.Drawing.Size(567, 466);
+			this.splitContainer2.SplitterDistance = 158;
 			this.splitContainer2.TabIndex = 0;
 			// 
 			// gridRequestHeaders
@@ -173,7 +171,7 @@
 			this.gridRequestHeaders.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.gridRequestHeaders.Location = new System.Drawing.Point(0, 0);
 			this.gridRequestHeaders.Name = "gridRequestHeaders";
-			this.gridRequestHeaders.Size = new System.Drawing.Size(567, 147);
+			this.gridRequestHeaders.Size = new System.Drawing.Size(567, 158);
 			this.gridRequestHeaders.TabIndex = 0;
 			// 
 			// txtRequestBody
@@ -181,7 +179,7 @@
 			this.txtRequestBody.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.txtRequestBody.Location = new System.Drawing.Point(0, 0);
 			this.txtRequestBody.Name = "txtRequestBody";
-			this.txtRequestBody.Size = new System.Drawing.Size(567, 282);
+			this.txtRequestBody.Size = new System.Drawing.Size(567, 304);
 			this.txtRequestBody.TabIndex = 0;
 			this.txtRequestBody.Text = "";
 			// 
@@ -235,21 +233,12 @@
 			this.txtResponseBody.TabIndex = 0;
 			this.txtResponseBody.Text = "";
 			// 
-			// panel1
-			// 
-			this.panel1.Controls.Add(this.btnGO);
-			this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.panel1.Location = new System.Drawing.Point(0, 498);
-			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(823, 33);
-			this.panel1.TabIndex = 1;
-			// 
 			// btnGO
 			// 
-			this.btnGO.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnGO.Location = new System.Drawing.Point(721, 5);
+			this.btnGO.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnGO.Location = new System.Drawing.Point(750, 5);
 			this.btnGO.Name = "btnGO";
-			this.btnGO.Size = new System.Drawing.Size(93, 23);
+			this.btnGO.Size = new System.Drawing.Size(66, 22);
 			this.btnGO.TabIndex = 0;
 			this.btnGO.Text = "GO";
 			this.btnGO.UseVisualStyleBackColor = true;
@@ -257,6 +246,7 @@
 			// 
 			// panel2
 			// 
+			this.panel2.Controls.Add(this.btnGO);
 			this.panel2.Controls.Add(this.txtURL);
 			this.panel2.Controls.Add(this.cboMethod);
 			this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
@@ -271,7 +261,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.txtURL.Location = new System.Drawing.Point(139, 6);
 			this.txtURL.Name = "txtURL";
-			this.txtURL.Size = new System.Drawing.Size(672, 20);
+			this.txtURL.Size = new System.Drawing.Size(605, 20);
 			this.txtURL.TabIndex = 1;
 			// 
 			// cboMethod
@@ -294,7 +284,6 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(823, 531);
 			this.Controls.Add(this.splitContainer1);
-			this.Controls.Add(this.panel1);
 			this.Controls.Add(this.panel2);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "frmMain";
@@ -320,7 +309,6 @@
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
 			this.splitContainer4.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.gridResponseHeaders)).EndInit();
-			this.panel1.ResumeLayout(false);
 			this.panel2.ResumeLayout(false);
 			this.panel2.PerformLayout();
 			this.ResumeLayout(false);
@@ -332,7 +320,6 @@
 		private System.Windows.Forms.SplitContainer splitContainer1;
 		private System.Windows.Forms.SplitContainer splitContainer2;
 		private System.Windows.Forms.DataGridView gridRequestHeaders;
-		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.Panel panel2;
 		private System.Windows.Forms.TextBox txtURL;
 		private System.Windows.Forms.ComboBox cboMethod;
