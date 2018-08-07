@@ -69,6 +69,8 @@ namespace PaJaMa.WebRequestor
 			reqResp.RequestDate = DateTime.Now;
 			reqResp.StatusCode = -1;
 			_requestResponseHistory.Insert(0, reqResp);
+			gridRequestsResponses.ClearSelection();
+			gridRequestsResponses.Rows[0].Selected = true;
 			HttpWebResponse response = null;
 			Exception exception = null;
 			try
