@@ -62,6 +62,8 @@ namespace PaJaMa.WebRequestor
 
 		private async void btnGO_Click(object sender, EventArgs e)
 		{
+			txtResponseBody.Text = string.Empty;
+			gridResponseHeaders.DataSource = new BindingList<Header>();
 			var reqResp = new RequestResponse();
 			reqResp.URL = txtURL.Text;
 			reqResp.RequestBody = txtRequestBody.Text;
