@@ -41,6 +41,7 @@ namespace PaJaMa.WebRequestor
 				var first = requestResponseHistory.First();
 				txtURL.Text = first.URL;
 				cboMethod.Text = first.Method;
+				txtRequestBody.Enabled = cboMethod.Text != "GET";
 				txtRequestBody.Text = first.RequestBody;
 				gridRequestHeaders.DataSource = new BindingList<Header>(first.RequestHeaders);
 			}
@@ -49,6 +50,7 @@ namespace PaJaMa.WebRequestor
 				gridRequestHeaders.DataSource = new BindingList<Header>();
 			}
 			gridRequestsResponses.DataSource = _requestResponseHistory = new BindingList<RequestResponse>(requestResponseHistory);
+			URL.Width = gridRequestsResponses.Width - StatusCode.Width - Method.Width - 45;
 		}
 
 		private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -229,6 +231,12 @@ namespace PaJaMa.WebRequestor
 		private void cboMethod_TextChanged(object sender, EventArgs e)
 		{
 			txtRequestBody.Enabled = cboMethod.Text != "GET";
+		}
+
+		private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
+		{
+			if (gridRequestsResponses.Width > URL.Width + StatusCode.Width + Method.Width)
+				URL.Width = gridRequestsResponses.Width - StatusCode.Width - Method.Width - 45;
 		}
 	}
 }

@@ -82,8 +82,9 @@
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.tabRequestResponse);
 			this.splitContainer1.Size = new System.Drawing.Size(823, 498);
-			this.splitContainer1.SplitterDistance = 238;
+			this.splitContainer1.SplitterDistance = 357;
 			this.splitContainer1.TabIndex = 0;
+			this.splitContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer1_SplitterMoved);
 			// 
 			// gridRequestsResponses
 			// 
@@ -97,7 +98,7 @@
 			this.gridRequestsResponses.Location = new System.Drawing.Point(0, 0);
 			this.gridRequestsResponses.Name = "gridRequestsResponses";
 			this.gridRequestsResponses.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.gridRequestsResponses.Size = new System.Drawing.Size(238, 498);
+			this.gridRequestsResponses.Size = new System.Drawing.Size(357, 498);
 			this.gridRequestsResponses.TabIndex = 0;
 			this.gridRequestsResponses.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridRequestsResponses_CellDoubleClick);
 			this.gridRequestsResponses.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.gridRequestsResponses_CellFormatting);
@@ -132,7 +133,7 @@
 			this.tabRequestResponse.Location = new System.Drawing.Point(0, 0);
 			this.tabRequestResponse.Name = "tabRequestResponse";
 			this.tabRequestResponse.SelectedIndex = 0;
-			this.tabRequestResponse.Size = new System.Drawing.Size(581, 498);
+			this.tabRequestResponse.Size = new System.Drawing.Size(462, 498);
 			this.tabRequestResponse.TabIndex = 1;
 			// 
 			// pageRequest
@@ -141,7 +142,7 @@
 			this.pageRequest.Location = new System.Drawing.Point(4, 22);
 			this.pageRequest.Name = "pageRequest";
 			this.pageRequest.Padding = new System.Windows.Forms.Padding(3);
-			this.pageRequest.Size = new System.Drawing.Size(573, 472);
+			this.pageRequest.Size = new System.Drawing.Size(454, 472);
 			this.pageRequest.TabIndex = 0;
 			this.pageRequest.Text = "Request";
 			this.pageRequest.UseVisualStyleBackColor = true;
@@ -160,7 +161,7 @@
 			// splitContainer2.Panel2
 			// 
 			this.splitContainer2.Panel2.Controls.Add(this.txtRequestBody);
-			this.splitContainer2.Size = new System.Drawing.Size(567, 466);
+			this.splitContainer2.Size = new System.Drawing.Size(448, 466);
 			this.splitContainer2.SplitterDistance = 158;
 			this.splitContainer2.TabIndex = 0;
 			// 
@@ -171,7 +172,7 @@
 			this.gridRequestHeaders.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.gridRequestHeaders.Location = new System.Drawing.Point(0, 0);
 			this.gridRequestHeaders.Name = "gridRequestHeaders";
-			this.gridRequestHeaders.Size = new System.Drawing.Size(567, 158);
+			this.gridRequestHeaders.Size = new System.Drawing.Size(448, 158);
 			this.gridRequestHeaders.TabIndex = 0;
 			// 
 			// txtRequestBody
@@ -179,7 +180,7 @@
 			this.txtRequestBody.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.txtRequestBody.Location = new System.Drawing.Point(0, 0);
 			this.txtRequestBody.Name = "txtRequestBody";
-			this.txtRequestBody.Size = new System.Drawing.Size(567, 304);
+			this.txtRequestBody.Size = new System.Drawing.Size(448, 304);
 			this.txtRequestBody.TabIndex = 0;
 			this.txtRequestBody.Text = "";
 			// 
