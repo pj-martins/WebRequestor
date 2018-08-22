@@ -49,6 +49,7 @@ namespace PaJaMa.WebRequestor
 				var first = requestResponseHistory.First();
 				txtURL.Text = first.URL;
 				cboMethod.Text = first.Method;
+				chkUseDefaultCredentials.Checked = first.UseDefaultCredentials;
 				txtRequestBody.Enabled = cboMethod.Text != "GET";
 				txtRequestBody.Text = first.RequestBody;
 				gridRequestHeaders.DataSource = new BindingList<Header>(first.RequestHeaders);
@@ -78,6 +79,7 @@ namespace PaJaMa.WebRequestor
 			reqResp.Method = cboMethod.Text;
 			reqResp.RequestDate = DateTime.Now;
 			reqResp.StatusCode = -1;
+			reqResp.UseDefaultCredentials = chkUseDefaultCredentials.Checked;
 			_requestResponseHistory.Insert(0, reqResp);
 			gridRequestsResponses.ClearSelection();
 			gridRequestsResponses.Rows[0].Selected = true;
@@ -88,6 +90,7 @@ namespace PaJaMa.WebRequestor
 			{
 				var req = WebRequest.Create(txtURL.Text);
 				req.Method = cboMethod.Text;
+				req.UseDefaultCredentials = chkUseDefaultCredentials.Checked;
 				foreach (DataGridViewRow hdr in gridRequestHeaders.Rows)
 				{
 					if (hdr.DataBoundItem == null) continue;
@@ -208,6 +211,7 @@ namespace PaJaMa.WebRequestor
 
 				txtURL.Text = rr.URL;
 				cboMethod.Text = rr.Method;
+				chkUseDefaultCredentials.Checked = rr.UseDefaultCredentials;
 				gridRequestHeaders.DataSource = new BindingList<Header>(rr.RequestHeaders);
 				gridResponseHeaders.DataSource = rr.ResponseHeaders;
 				txtRequestBody.Text = rr.RequestBody;

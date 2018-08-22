@@ -11,6 +11,7 @@ namespace PaJaMa.WebRequestor.Classes
 
 	public class RequestResponse
 	{
+		public bool UseDefaultCredentials { get; set; }
 		public DateTime RequestDate { get; set; }
 		public string URL { get; set; }
 		public string Method { get; set; }

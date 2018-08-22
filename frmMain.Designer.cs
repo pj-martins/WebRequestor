@@ -31,6 +31,10 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.gridRequestsResponses = new System.Windows.Forms.DataGridView();
+			this.URL = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Method = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.StatusCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Duration = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.tabRequestResponse = new System.Windows.Forms.TabControl();
 			this.pageRequest = new System.Windows.Forms.TabPage();
 			this.splitContainer2 = new System.Windows.Forms.SplitContainer();
@@ -44,10 +48,8 @@
 			this.panel2 = new System.Windows.Forms.Panel();
 			this.txtURL = new System.Windows.Forms.TextBox();
 			this.cboMethod = new System.Windows.Forms.ComboBox();
-			this.URL = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Method = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.StatusCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Duration = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.chkUseDefaultCredentials = new System.Windows.Forms.CheckBox();
+			this.panel1 = new System.Windows.Forms.Panel();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
@@ -67,6 +69,7 @@
 			this.splitContainer4.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.gridResponseHeaders)).BeginInit();
 			this.panel2.SuspendLayout();
+			this.panel1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// splitContainer1
@@ -106,6 +109,36 @@
 			this.gridRequestsResponses.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.gridRequestsResponses_CellFormatting);
 			this.gridRequestsResponses.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.gridRequestsResponses_RowsRemoved);
 			// 
+			// URL
+			// 
+			this.URL.DataPropertyName = "URL";
+			this.URL.HeaderText = "URL";
+			this.URL.Name = "URL";
+			this.URL.ReadOnly = true;
+			// 
+			// Method
+			// 
+			this.Method.DataPropertyName = "Method";
+			this.Method.HeaderText = "Method";
+			this.Method.Name = "Method";
+			this.Method.ReadOnly = true;
+			// 
+			// StatusCode
+			// 
+			this.StatusCode.DataPropertyName = "StatusCode";
+			this.StatusCode.HeaderText = "StatusCode";
+			this.StatusCode.Name = "StatusCode";
+			this.StatusCode.ReadOnly = true;
+			this.StatusCode.Width = 80;
+			// 
+			// Duration
+			// 
+			this.Duration.DataPropertyName = "Duration";
+			this.Duration.HeaderText = "Duration";
+			this.Duration.Name = "Duration";
+			this.Duration.ReadOnly = true;
+			this.Duration.Width = 50;
+			// 
 			// tabRequestResponse
 			// 
 			this.tabRequestResponse.Controls.Add(this.pageRequest);
@@ -138,6 +171,7 @@
 			// splitContainer2.Panel1
 			// 
 			this.splitContainer2.Panel1.Controls.Add(this.gridRequestHeaders);
+			this.splitContainer2.Panel1.Controls.Add(this.panel1);
 			// 
 			// splitContainer2.Panel2
 			// 
@@ -153,7 +187,7 @@
 			this.gridRequestHeaders.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.gridRequestHeaders.Location = new System.Drawing.Point(0, 0);
 			this.gridRequestHeaders.Name = "gridRequestHeaders";
-			this.gridRequestHeaders.Size = new System.Drawing.Size(448, 158);
+			this.gridRequestHeaders.Size = new System.Drawing.Size(448, 137);
 			this.gridRequestHeaders.TabIndex = 0;
 			// 
 			// txtRequestBody
@@ -261,35 +295,24 @@
 			this.cboMethod.Text = "GET";
 			this.cboMethod.TextChanged += new System.EventHandler(this.cboMethod_TextChanged);
 			// 
-			// URL
+			// chkUseDefaultCredentials
 			// 
-			this.URL.DataPropertyName = "URL";
-			this.URL.HeaderText = "URL";
-			this.URL.Name = "URL";
-			this.URL.ReadOnly = true;
+			this.chkUseDefaultCredentials.AutoSize = true;
+			this.chkUseDefaultCredentials.Location = new System.Drawing.Point(3, 3);
+			this.chkUseDefaultCredentials.Name = "chkUseDefaultCredentials";
+			this.chkUseDefaultCredentials.Size = new System.Drawing.Size(137, 17);
+			this.chkUseDefaultCredentials.TabIndex = 1;
+			this.chkUseDefaultCredentials.Text = "Use Default Credentials";
+			this.chkUseDefaultCredentials.UseVisualStyleBackColor = true;
 			// 
-			// Method
+			// panel1
 			// 
-			this.Method.DataPropertyName = "Method";
-			this.Method.HeaderText = "Method";
-			this.Method.Name = "Method";
-			this.Method.ReadOnly = true;
-			// 
-			// StatusCode
-			// 
-			this.StatusCode.DataPropertyName = "StatusCode";
-			this.StatusCode.HeaderText = "StatusCode";
-			this.StatusCode.Name = "StatusCode";
-			this.StatusCode.ReadOnly = true;
-			this.StatusCode.Width = 80;
-			// 
-			// Duration
-			// 
-			this.Duration.DataPropertyName = "Duration";
-			this.Duration.HeaderText = "Duration";
-			this.Duration.Name = "Duration";
-			this.Duration.ReadOnly = true;
-			this.Duration.Width = 50;
+			this.panel1.Controls.Add(this.chkUseDefaultCredentials);
+			this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.panel1.Location = new System.Drawing.Point(0, 137);
+			this.panel1.Name = "panel1";
+			this.panel1.Size = new System.Drawing.Size(448, 21);
+			this.panel1.TabIndex = 2;
 			// 
 			// frmMain
 			// 
@@ -324,6 +347,8 @@
 			((System.ComponentModel.ISupportInitialize)(this.gridResponseHeaders)).EndInit();
 			this.panel2.ResumeLayout(false);
 			this.panel2.PerformLayout();
+			this.panel1.ResumeLayout(false);
+			this.panel1.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -349,6 +374,8 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn Method;
 		private System.Windows.Forms.DataGridViewTextBoxColumn StatusCode;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Duration;
+		private System.Windows.Forms.Panel panel1;
+		private System.Windows.Forms.CheckBox chkUseDefaultCredentials;
 	}
 }
 
