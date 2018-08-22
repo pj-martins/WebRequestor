@@ -31,7 +31,15 @@ namespace PaJaMa.WebRequestor
 		{
 			FormSettings.LoadSettings(this);
 			gridRequestsResponses.AutoGenerateColumns = false;
-			var requestResponseHistory = SettingsHelper.GetUserSettings<List<RequestResponse>>(REQUEST_RESPONSE_HISTORY).OrderByDescending(r => r.RequestDate).ToList() ?? new List<RequestResponse>();
+			List<RequestResponse> requestResponseHistory;
+			try
+			{
+				requestResponseHistory = SettingsHelper.GetUserSettings<List<RequestResponse>>(REQUEST_RESPONSE_HISTORY).OrderByDescending(r => r.RequestDate).ToList() ?? new List<RequestResponse>();
+			}
+			catch
+			{
+				requestResponseHistory = new List<RequestResponse>();
+			}
 			foreach (var rh in requestResponseHistory)
 			{
 				if (rh.StatusCode < 0) rh.StatusCode = 0;
@@ -50,7 +58,7 @@ namespace PaJaMa.WebRequestor
 				gridRequestHeaders.DataSource = new BindingList<Header>();
 			}
 			gridRequestsResponses.DataSource = _requestResponseHistory = new BindingList<RequestResponse>(requestResponseHistory);
-			URL.Width = gridRequestsResponses.Width - StatusCode.Width - Method.Width - 45;
+			URL.Width = gridRequestsResponses.Width - StatusCode.Width - Method.Width - Duration.Width - 65;
 		}
 
 		private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -75,6 +83,7 @@ namespace PaJaMa.WebRequestor
 			gridRequestsResponses.Rows[0].Selected = true;
 			HttpWebResponse response = null;
 			Exception exception = null;
+			DateTime? start = null;
 			try
 			{
 				var req = WebRequest.Create(txtURL.Text);
@@ -89,6 +98,7 @@ namespace PaJaMa.WebRequestor
 					else
 						req.Headers.Add(header.Name, header.Value);
 				}
+				start = DateTime.Now;
 				if (cboMethod.Text != "GET" && !string.IsNullOrEmpty(txtRequestBody.Text))
 				{
 					var stream = req.GetRequestStream();
@@ -106,6 +116,11 @@ namespace PaJaMa.WebRequestor
 			catch (Exception ex)
 			{
 				exception = ex;
+			}
+
+			if (start != null)
+			{
+				reqResp.Duration = (int)Math.Round((DateTime.Now - start.Value).TotalMilliseconds);
 			}
 
 			if (exception != null)
@@ -213,7 +228,6 @@ namespace PaJaMa.WebRequestor
 			if (e.RowIndex >= 0)
 			{
 				var rr = gridRequestsResponses.Rows[e.RowIndex].DataBoundItem as RequestResponse;
-				e.CellStyle.Font = new Font(e.CellStyle.Font, FontStyle.Bold);
 				if (rr.StatusCode < 0)
 					e.CellStyle.ForeColor = Color.LightGray;
 				else if (rr.StatusCode == 0)
@@ -239,8 +253,8 @@ namespace PaJaMa.WebRequestor
 
 		private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
 		{
-			if (gridRequestsResponses.Width > URL.Width + StatusCode.Width + Method.Width)
-				URL.Width = gridRequestsResponses.Width - StatusCode.Width - Method.Width - 45;
+			if (gridRequestsResponses.Width > URL.Width + StatusCode.Width + Method.Width + Duration.Width)
+				URL.Width = gridRequestsResponses.Width - StatusCode.Width - Method.Width - Duration.Width - 65;
 		}
 	}
 }

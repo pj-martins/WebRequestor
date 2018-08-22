@@ -19,6 +19,7 @@ namespace PaJaMa.WebRequestor.Classes
 		public List<Header> ResponseHeaders { get; set; }
 		public string RequestBody { get; set; }
 		public string ResponseBody { get; set; }
+		public int Duration { get; set; }
 
 		public RequestResponse()
 		{

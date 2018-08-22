@@ -31,9 +31,6 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.gridRequestsResponses = new System.Windows.Forms.DataGridView();
-			this.URL = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Method = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.StatusCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.tabRequestResponse = new System.Windows.Forms.TabControl();
 			this.pageRequest = new System.Windows.Forms.TabPage();
 			this.splitContainer2 = new System.Windows.Forms.SplitContainer();
@@ -47,6 +44,10 @@
 			this.panel2 = new System.Windows.Forms.Panel();
 			this.txtURL = new System.Windows.Forms.TextBox();
 			this.cboMethod = new System.Windows.Forms.ComboBox();
+			this.URL = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Method = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.StatusCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Duration = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
@@ -93,7 +94,8 @@
 			this.gridRequestsResponses.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.URL,
             this.Method,
-            this.StatusCode});
+            this.StatusCode,
+            this.Duration});
 			this.gridRequestsResponses.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.gridRequestsResponses.Location = new System.Drawing.Point(0, 0);
 			this.gridRequestsResponses.Name = "gridRequestsResponses";
@@ -103,27 +105,6 @@
 			this.gridRequestsResponses.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridRequestsResponses_CellDoubleClick);
 			this.gridRequestsResponses.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.gridRequestsResponses_CellFormatting);
 			this.gridRequestsResponses.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.gridRequestsResponses_RowsRemoved);
-			// 
-			// URL
-			// 
-			this.URL.DataPropertyName = "URL";
-			this.URL.HeaderText = "URL";
-			this.URL.Name = "URL";
-			this.URL.ReadOnly = true;
-			// 
-			// Method
-			// 
-			this.Method.DataPropertyName = "Method";
-			this.Method.HeaderText = "Method";
-			this.Method.Name = "Method";
-			this.Method.ReadOnly = true;
-			// 
-			// StatusCode
-			// 
-			this.StatusCode.DataPropertyName = "StatusCode";
-			this.StatusCode.HeaderText = "StatusCode";
-			this.StatusCode.Name = "StatusCode";
-			this.StatusCode.ReadOnly = true;
 			// 
 			// tabRequestResponse
 			// 
@@ -190,7 +171,7 @@
 			this.pageResponse.Location = new System.Drawing.Point(4, 22);
 			this.pageResponse.Name = "pageResponse";
 			this.pageResponse.Padding = new System.Windows.Forms.Padding(3);
-			this.pageResponse.Size = new System.Drawing.Size(573, 472);
+			this.pageResponse.Size = new System.Drawing.Size(454, 472);
 			this.pageResponse.TabIndex = 1;
 			this.pageResponse.Text = "Response";
 			this.pageResponse.UseVisualStyleBackColor = true;
@@ -209,7 +190,7 @@
 			// splitContainer4.Panel2
 			// 
 			this.splitContainer4.Panel2.Controls.Add(this.txtResponseBody);
-			this.splitContainer4.Size = new System.Drawing.Size(567, 466);
+			this.splitContainer4.Size = new System.Drawing.Size(448, 466);
 			this.splitContainer4.SplitterDistance = 158;
 			this.splitContainer4.TabIndex = 1;
 			// 
@@ -222,7 +203,7 @@
 			this.gridResponseHeaders.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.gridResponseHeaders.Location = new System.Drawing.Point(0, 0);
 			this.gridResponseHeaders.Name = "gridResponseHeaders";
-			this.gridResponseHeaders.Size = new System.Drawing.Size(567, 158);
+			this.gridResponseHeaders.Size = new System.Drawing.Size(448, 158);
 			this.gridResponseHeaders.TabIndex = 0;
 			// 
 			// txtResponseBody
@@ -230,7 +211,7 @@
 			this.txtResponseBody.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.txtResponseBody.Location = new System.Drawing.Point(0, 0);
 			this.txtResponseBody.Name = "txtResponseBody";
-			this.txtResponseBody.Size = new System.Drawing.Size(567, 304);
+			this.txtResponseBody.Size = new System.Drawing.Size(448, 304);
 			this.txtResponseBody.TabIndex = 0;
 			this.txtResponseBody.Text = "";
 			// 
@@ -279,6 +260,36 @@
 			this.cboMethod.TabIndex = 0;
 			this.cboMethod.Text = "GET";
 			this.cboMethod.TextChanged += new System.EventHandler(this.cboMethod_TextChanged);
+			// 
+			// URL
+			// 
+			this.URL.DataPropertyName = "URL";
+			this.URL.HeaderText = "URL";
+			this.URL.Name = "URL";
+			this.URL.ReadOnly = true;
+			// 
+			// Method
+			// 
+			this.Method.DataPropertyName = "Method";
+			this.Method.HeaderText = "Method";
+			this.Method.Name = "Method";
+			this.Method.ReadOnly = true;
+			// 
+			// StatusCode
+			// 
+			this.StatusCode.DataPropertyName = "StatusCode";
+			this.StatusCode.HeaderText = "StatusCode";
+			this.StatusCode.Name = "StatusCode";
+			this.StatusCode.ReadOnly = true;
+			this.StatusCode.Width = 80;
+			// 
+			// Duration
+			// 
+			this.Duration.DataPropertyName = "Duration";
+			this.Duration.HeaderText = "Duration";
+			this.Duration.Name = "Duration";
+			this.Duration.ReadOnly = true;
+			this.Duration.Width = 50;
 			// 
 			// frmMain
 			// 
@@ -337,6 +348,7 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn URL;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Method;
 		private System.Windows.Forms.DataGridViewTextBoxColumn StatusCode;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Duration;
 	}
 }
 
