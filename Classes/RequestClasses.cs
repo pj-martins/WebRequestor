@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Serialization;
 
 namespace PaJaMa.WebRequestor.Classes
 {
@@ -7,6 +9,11 @@ namespace PaJaMa.WebRequestor.Classes
 	{
 		public string Name { get; set; }
 		public string Value { get; set; }
+
+		public Header Clone()
+		{
+			return new Header() { Name = this.Name, Value = this.Value };
+		}
 	}
 
 	public class RequestResponse
@@ -22,10 +29,38 @@ namespace PaJaMa.WebRequestor.Classes
 		public string ResponseBody { get; set; }
 		public int Duration { get; set; }
 
+		[XmlIgnore]
+		public double ResponseLength
+		{
+			get { return ResponseBody.Length; }
+		}
+
 		public RequestResponse()
 		{
 			RequestHeaders = new List<Header>();
 			ResponseHeaders = new List<Header>();
 		}
+
+		public RequestResponse Clone()
+		{
+			return new RequestResponse()
+			{
+				UseDefaultCredentials = this.UseDefaultCredentials,
+				RequestDate = this.RequestDate,
+				URL = this.URL,
+				Method = this.Method,
+				StatusCode = this.StatusCode,
+				RequestHeaders = this.RequestHeaders.Select(r => r.Clone()).ToList(),
+				ResponseHeaders = this.ResponseHeaders.Select(r => r.Clone()).ToList(),
+				RequestBody = this.RequestBody,
+				ResponseBody = this.ResponseBody,
+				Duration = this.Duration
+			};
+		}
+	}
+
+	public class SendWorkspaces
+	{
+		public int TabCount { get; set; }
 	}
 }
