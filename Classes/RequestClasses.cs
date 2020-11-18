@@ -32,7 +32,7 @@ namespace PaJaMa.WebRequestor.Classes
 		[XmlIgnore]
 		public double ResponseLength
 		{
-			get { return ResponseBody.Length; }
+			get { return string.IsNullOrEmpty(ResponseBody) ? 0 : ResponseBody.Length; }
 		}
 
 		public RequestResponse()
