@@ -283,6 +283,7 @@ namespace PaJaMa.WebRequestor
 				{
 					var tv = new TreeView();
 					tv.Dock = DockStyle.Fill;
+                    tv.DoubleClick += Tv_DoubleClick;
 					populateTreeView(tv.Nodes, obj, string.Empty);
 					tv.ExpandAll();
 					splitResponse.Panel2.Controls.Add(tv);
@@ -297,7 +298,22 @@ namespace PaJaMa.WebRequestor
 			}
 		}
 
-		private void populateTreeView(TreeNodeCollection nodes, object obj, string prepend)
+        private void Tv_DoubleClick(object sender, EventArgs e)
+        {
+			var tv = sender as TreeView;
+			var txt = tv.SelectedNode.Text;
+			var parts = txt.Split(':');
+			if (parts.Length > 1)
+            {
+				Clipboard.SetText(string.Join(":", parts.Skip(1)).TrimStart());
+            }
+			else
+            {
+				Clipboard.SetText(txt);
+            }
+        }
+
+        private void populateTreeView(TreeNodeCollection nodes, object obj, string prepend)
 		{
 			if (obj is JArray jarr)
             {
