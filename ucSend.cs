@@ -355,6 +355,11 @@ namespace PaJaMa.WebRequestor
                         {
                             val = jval.Value.ToString();
                         }
+
+						if (jval.Type == JTokenType.Boolean)
+                        {
+							val = val.ToLower();
+                        }
                     }
                     nodes.Add($"{jprop.Name} : {val}");
 				}
