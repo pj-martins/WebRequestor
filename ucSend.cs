@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using System.Xml;
 using System.IO;
 using PaJaMa.WinControls;
+using Newtonsoft.Json.Linq;
 
 namespace PaJaMa.WebRequestor
 {
@@ -74,7 +75,6 @@ namespace PaJaMa.WebRequestor
 
 		private async void btnGO_Click(object sender, EventArgs e)
 		{
-			txtResponseBody.Text = string.Empty;
 			gridResponseHeaders.DataSource = new BindingList<Header>();
 			var reqResp = new RequestResponse();
 			reqResp.URL = txtURL.Text;
@@ -153,15 +153,7 @@ namespace PaJaMa.WebRequestor
 				gridResponseHeaders.DataSource = reqResp.ResponseHeaders;
 			}
 
-			try
-			{
-				var obj = JsonConvert.DeserializeObject(reqResp.ResponseBody);
-				txtResponseBody.Text = JsonConvert.SerializeObject(obj, Newtonsoft.Json.Formatting.Indented);
-			}
-			catch
-			{
-				txtResponseBody.Text = PrintXML(reqResp.ResponseBody);
-			}
+			populateOutputControl(reqResp);
 
 			gridRequestsResponses.Invalidate();
 			_requestResponseHistory.Insert(0, reqResp.Clone());
@@ -227,15 +219,7 @@ namespace PaJaMa.WebRequestor
 				gridRequestHeaders.DataSource = new BindingList<Header>(rr.RequestHeaders);
 				gridResponseHeaders.DataSource = rr.ResponseHeaders;
 				txtRequestBody.Text = rr.RequestBody;
-				try
-				{
-					var obj = JsonConvert.DeserializeObject(rr.ResponseBody);
-					txtResponseBody.Text = JsonConvert.SerializeObject(obj, Newtonsoft.Json.Formatting.Indented);
-				}
-				catch
-				{
-					txtResponseBody.Text = PrintXML(rr.ResponseBody);
-				}
+				populateOutputControl(rr);
 			}
 		}
 
@@ -281,5 +265,84 @@ namespace PaJaMa.WebRequestor
         {
 			new frmBasicCreds64().Show();
 		}
-    }
+
+		private void populateOutputControl(RequestResponse rr)
+        {
+			splitResponse.Panel2.Controls.Clear();
+			try
+			{
+				var obj = JsonConvert.DeserializeObject(rr.ResponseBody, new JsonSerializerSettings() { MetadataPropertyHandling = MetadataPropertyHandling.Ignore });
+				if (rr.ResponseBody.Length > 3500000)
+				{
+					var txt = new RichTextBox();
+					txt.Dock = DockStyle.Fill;
+					txt.Text = JsonConvert.SerializeObject(obj, Newtonsoft.Json.Formatting.Indented);
+					splitResponse.Panel2.Controls.Add(txt);
+				}
+				else
+				{
+					var tv = new TreeView();
+					tv.Dock = DockStyle.Fill;
+					populateTreeView(tv.Nodes, obj, string.Empty);
+					tv.ExpandAll();
+					splitResponse.Panel2.Controls.Add(tv);
+				}
+			}
+			catch
+			{
+				var txt = new RichTextBox();
+				txt.Dock = DockStyle.Fill;
+				txt.Text = PrintXML(rr.ResponseBody);
+				splitResponse.Panel2.Controls.Add(txt);
+			}
+		}
+
+		private void populateTreeView(TreeNodeCollection nodes, object obj, string prepend)
+		{
+			if (obj is JArray jarr)
+            {
+				var node = nodes.Add($"{(!string.IsNullOrEmpty(prepend) ? $"{prepend} : " : "")}[]");
+				foreach (var el in jarr)
+                {
+					populateTreeView(node.Nodes, el, string.Empty);
+                }
+			}
+			else if (obj is JObject jobj)
+            {
+				var node = nodes.Add($"{(!string.IsNullOrEmpty(prepend) ? $"{prepend} : " : "")}{{}}");
+				foreach (var el in jobj.Children())
+				{
+					populateTreeView(node.Nodes, el, string.Empty);
+				}
+			}
+			else if (obj is JProperty jprop)
+            {
+				if (jprop.Value is JArray || jprop.Value is JObject)
+                {
+					populateTreeView(nodes, jprop.Value, jprop.Name);
+                }
+				else
+                {
+                    var jval = jprop.Value as JValue;
+                    string val;
+                    if (jval.Value == null)
+                    {
+                        val = "null";
+                    }
+                    else
+                    {
+                        if (jval.Type != JTokenType.Boolean && jval.Type != JTokenType.Float && jval.Type != JTokenType.Integer)
+                        {
+                            val = $"\"{jval.Value}\"";
+                        }
+                        else
+                        {
+                            val = jval.Value.ToString();
+                        }
+                    }
+                    nodes.Add($"{jprop.Name} : {val}");
+				}
+			}
+		}
+	}
 }

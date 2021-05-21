@@ -32,14 +32,14 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnGO = new System.Windows.Forms.Button();
             this.txtURL = new System.Windows.Forms.TextBox();
-            this.txtResponseBody = new System.Windows.Forms.RichTextBox();
             this.gridResponseHeaders = new System.Windows.Forms.DataGridView();
-            this.splitContainer4 = new System.Windows.Forms.SplitContainer();
+            this.splitResponse = new System.Windows.Forms.SplitContainer();
             this.pageResponse = new System.Windows.Forms.TabPage();
             this.txtRequestBody = new ScintillaNET.Scintilla();
             this.chkUseDefaultCredentials = new System.Windows.Forms.CheckBox();
             this.gridRequestHeaders = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnBasic64 = new System.Windows.Forms.Button();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.pageRequest = new System.Windows.Forms.TabPage();
             this.tabRequestResponse = new System.Windows.Forms.TabControl();
@@ -51,13 +51,11 @@
             this.Duration = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.RequestDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ResponseLength = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.btnBasic64 = new System.Windows.Forms.Button();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridResponseHeaders)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
-            this.splitContainer4.Panel1.SuspendLayout();
-            this.splitContainer4.Panel2.SuspendLayout();
-            this.splitContainer4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitResponse)).BeginInit();
+            this.splitResponse.Panel1.SuspendLayout();
+            this.splitResponse.SuspendLayout();
             this.pageResponse.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridRequestHeaders)).BeginInit();
             this.panel1.SuspendLayout();
@@ -120,15 +118,6 @@
             this.txtURL.Size = new System.Drawing.Size(813, 20);
             this.txtURL.TabIndex = 1;
             // 
-            // txtResponseBody
-            // 
-            this.txtResponseBody.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtResponseBody.Location = new System.Drawing.Point(0, 0);
-            this.txtResponseBody.Name = "txtResponseBody";
-            this.txtResponseBody.Size = new System.Drawing.Size(567, 422);
-            this.txtResponseBody.TabIndex = 0;
-            this.txtResponseBody.Text = "";
-            // 
             // gridResponseHeaders
             // 
             this.gridResponseHeaders.AllowUserToAddRows = false;
@@ -141,27 +130,23 @@
             this.gridResponseHeaders.Size = new System.Drawing.Size(567, 216);
             this.gridResponseHeaders.TabIndex = 0;
             // 
-            // splitContainer4
+            // splitResponse
             // 
-            this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer4.Location = new System.Drawing.Point(3, 3);
-            this.splitContainer4.Name = "splitContainer4";
-            this.splitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.splitResponse.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitResponse.Location = new System.Drawing.Point(3, 3);
+            this.splitResponse.Name = "splitResponse";
+            this.splitResponse.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
-            // splitContainer4.Panel1
+            // splitResponse.Panel1
             // 
-            this.splitContainer4.Panel1.Controls.Add(this.gridResponseHeaders);
-            // 
-            // splitContainer4.Panel2
-            // 
-            this.splitContainer4.Panel2.Controls.Add(this.txtResponseBody);
-            this.splitContainer4.Size = new System.Drawing.Size(567, 642);
-            this.splitContainer4.SplitterDistance = 216;
-            this.splitContainer4.TabIndex = 1;
+            this.splitResponse.Panel1.Controls.Add(this.gridResponseHeaders);
+            this.splitResponse.Size = new System.Drawing.Size(567, 642);
+            this.splitResponse.SplitterDistance = 216;
+            this.splitResponse.TabIndex = 1;
             // 
             // pageResponse
             // 
-            this.pageResponse.Controls.Add(this.splitContainer4);
+            this.pageResponse.Controls.Add(this.splitResponse);
             this.pageResponse.Location = new System.Drawing.Point(4, 22);
             this.pageResponse.Name = "pageResponse";
             this.pageResponse.Padding = new System.Windows.Forms.Padding(3);
@@ -207,6 +192,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(567, 32);
             this.panel1.TabIndex = 2;
+            // 
+            // btnBasic64
+            // 
+            this.btnBasic64.Location = new System.Drawing.Point(146, 6);
+            this.btnBasic64.Name = "btnBasic64";
+            this.btnBasic64.Size = new System.Drawing.Size(88, 23);
+            this.btnBasic64.TabIndex = 2;
+            this.btnBasic64.Text = "Basic 64";
+            this.btnBasic64.UseVisualStyleBackColor = true;
+            this.btnBasic64.Click += new System.EventHandler(this.btnBasic64_Click);
             // 
             // splitContainer2
             // 
@@ -331,16 +326,6 @@
             this.ResponseLength.HeaderText = "Length";
             this.ResponseLength.Name = "ResponseLength";
             // 
-            // btnBasic64
-            // 
-            this.btnBasic64.Location = new System.Drawing.Point(146, 6);
-            this.btnBasic64.Name = "btnBasic64";
-            this.btnBasic64.Size = new System.Drawing.Size(88, 23);
-            this.btnBasic64.TabIndex = 2;
-            this.btnBasic64.Text = "Basic 64";
-            this.btnBasic64.UseVisualStyleBackColor = true;
-            this.btnBasic64.Click += new System.EventHandler(this.btnBasic64_Click);
-            // 
             // ucSend
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -353,10 +338,9 @@
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridResponseHeaders)).EndInit();
-            this.splitContainer4.Panel1.ResumeLayout(false);
-            this.splitContainer4.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
-            this.splitContainer4.ResumeLayout(false);
+            this.splitResponse.Panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitResponse)).EndInit();
+            this.splitResponse.ResumeLayout(false);
             this.pageResponse.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridRequestHeaders)).EndInit();
             this.panel1.ResumeLayout(false);
@@ -382,9 +366,8 @@
 		private System.Windows.Forms.Panel panel2;
 		private System.Windows.Forms.Button btnGO;
 		private System.Windows.Forms.TextBox txtURL;
-		private System.Windows.Forms.RichTextBox txtResponseBody;
 		private System.Windows.Forms.DataGridView gridResponseHeaders;
-		private System.Windows.Forms.SplitContainer splitContainer4;
+		private System.Windows.Forms.SplitContainer splitResponse;
 		private System.Windows.Forms.TabPage pageResponse;
 		private ScintillaNET.Scintilla txtRequestBody;
 		private System.Windows.Forms.CheckBox chkUseDefaultCredentials;
