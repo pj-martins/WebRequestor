@@ -157,6 +157,7 @@
             this.txtResponse.Name = "txtResponse";
             this.txtResponse.Size = new System.Drawing.Size(567, 422);
             this.txtResponse.TabIndex = 0;
+            this.txtResponse.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtResponse_KeyDown);
             // 
             // pageResponse
             // 

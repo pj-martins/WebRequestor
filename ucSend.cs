@@ -15,6 +15,7 @@ using System.IO;
 using PaJaMa.WinControls;
 using Newtonsoft.Json.Linq;
 using ScintillaNET;
+using ScintillaNET_FindReplaceDialog;
 
 namespace PaJaMa.WebRequestor
 {
@@ -24,10 +25,12 @@ namespace PaJaMa.WebRequestor
 		public Workspace Workspace { get; set; }
 		private DebounceDispatcher _removeTimer = new DebounceDispatcher();
 		public string WorkspacePath { get; set; }
+		private FindReplace _findReplace;
 
 		public ucSend()
 		{
 			InitializeComponent();
+			_findReplace = new FindReplace(txtResponse);
 		}
 
 		private void ucSend_Load(object sender, EventArgs e)
@@ -396,5 +399,35 @@ namespace PaJaMa.WebRequestor
 				}
 			}
 		}
-	}
+
+        private void txtResponse_KeyDown(object sender, KeyEventArgs e)
+        {
+			if (e.Control && e.KeyCode == Keys.F)
+			{
+				_findReplace.ShowFind();
+				e.SuppressKeyPress = true;
+			}
+			else if (e.Shift && e.KeyCode == Keys.F3)
+			{
+				_findReplace.Window.FindPrevious();
+				e.SuppressKeyPress = true;
+			}
+			else if (e.KeyCode == Keys.F3)
+			{
+				_findReplace.Window.FindNext();
+				e.SuppressKeyPress = true;
+			}
+			else if (e.Control && e.KeyCode == Keys.I)
+			{
+				_findReplace.ShowIncrementalSearch();
+				e.SuppressKeyPress = true;
+			}
+			else if (e.Control && e.KeyCode == Keys.G)
+			{
+				GoTo MyGoTo = new GoTo((Scintilla)sender);
+				MyGoTo.ShowGoToDialog();
+				e.SuppressKeyPress = true;
+			}
+		}
+    }
 }
