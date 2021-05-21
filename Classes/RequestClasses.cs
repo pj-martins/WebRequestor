@@ -59,8 +59,14 @@ namespace PaJaMa.WebRequestor.Classes
 		}
 	}
 
-	public class SendWorkspaces
-	{
-		public int TabCount { get; set; }
-	}
+	public class Workspace
+    {
+		public List<RequestResponse> RequestResponses { get; set; }
+		public Guid ID { get; set; }
+		public Workspace()
+        {
+			RequestResponses = new List<RequestResponse>();
+			ID = Guid.NewGuid();
+        }
+    }
 }

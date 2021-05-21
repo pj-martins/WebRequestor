@@ -1,62 +1,85 @@
-﻿using PaJaMa.WebRequestor.Classes;
+﻿using Newtonsoft.Json;
+using PaJaMa.Common;
+using PaJaMa.WebRequestor.Classes;
 using PaJaMa.WinControls;
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace PaJaMa.WebRequestor
 {
-	public partial class frmMain : Form
-	{
-		public frmMain()
-		{
-			InitializeComponent();
-		}
+    public partial class frmMain : Form
+    {
+        public frmMain()
+        {
+            InitializeComponent();
+        }
 
-		private void frmMain_Load(object sender, EventArgs e)
-		{
-			FormSettings.LoadSettings(this);
+        private string workspaceDirectory => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                Assembly.GetEntryAssembly().AssemblyTitle());
 
-			var sendSettings = PaJaMa.Common.SettingsHelper.GetUserSettings<SendWorkspaces>();
-			for (int i = 0; i < sendSettings.TabCount; i++)
-			{
-				addSendWorkspace(null);
-			}
+        private void frmMain_Load(object sender, EventArgs e)
+        {
+            FormSettings.LoadSettings(this);
 
-			if (tabSendWorkspaces.TabPages.Count < 1)
-				addSendWorkspace(null);
-		}
+            var files = new DirectoryInfo(workspaceDirectory).GetFiles().Where(x => x.FullName.Contains("Workspace_")).OrderBy(c => c.CreationTime);
+            foreach (var file in files)
+            {
+                try
+                {
+                    var deserialized = JsonConvert.DeserializeObject<Workspace>(File.ReadAllText(file.FullName));
+                    addSendWorkspace(deserialized);
+                }
+                catch
+                {
+                    // invalid json
+                }
+            }
 
-		private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
-		{
-			if (this.WindowState == FormWindowState.Minimized) return;
+            if (tabSendWorkspaces.TabPages.Count < 1)
+                addSendWorkspace(null);
+        }
 
-			FormSettings.SaveSettings(this);
-		}
+        private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized) return;
 
-		private ucSend addSendWorkspace(WinControls.TabControl.TabPage tabPage)
-		{
-			var uc = new ucSend();
-			uc.Index = tabSendWorkspaces.TabPages.Count;
-			bool add = false;
-			if (tabPage == null)
-			{
-				tabPage = new WinControls.TabControl.TabPage();
-				add = true;
-			}
-			tabPage.Text = "Workspace " + (uc.Index + 1).ToString();
-			uc.Dock = DockStyle.Fill;
-			tabPage.Controls.Add(uc);
-			if (add)
-			{
-				tabSendWorkspaces.TabPages.Add(tabPage);
-				tabSendWorkspaces.SelectedTab = tabPage;
-			}
-			return uc;
-		}
+            FormSettings.SaveSettings(this);
+        }
 
-		private void tabSendWorkspaces_TabAdding(object sender, WinControls.TabControl.TabEventArgs e)
-		{
-			addSendWorkspace(e.TabPage);
-		}
-	}
+        private ucSend addSendWorkspace(Workspace workspace)
+        {
+            if (workspace == null)
+            {
+                workspace = new Workspace();
+            }
+            var uc = new ucSend();
+            uc.Workspace = workspace;
+            uc.WorkspacePath = Path.Combine(workspaceDirectory, $"Workspace_{workspace.ID}");
+            var tabPage = new WinControls.TabControl.TabPage();
+            tabPage.Text = "Workspace " + (tabSendWorkspaces.TabPages.Count + 1).ToString();
+            tabPage.ContextMenuStrip = new ContextMenuStrip();
+            uc.Dock = DockStyle.Fill;
+            tabPage.Controls.Add(uc);
+            tabSendWorkspaces.TabPages.Add(tabPage);
+            tabSendWorkspaces.SelectedTab = tabPage;
+            return uc;
+        }
+
+        private void tabSendWorkspaces_TabAdding(object sender, WinControls.TabControl.TabEventArgs e)
+        {
+            addSendWorkspace(null);
+            e.Cancel = true;
+        }
+
+        private void tabSendWorkspaces_TabClosing(object sender, WinControls.TabControl.TabEventArgs e)
+        {
+            var uc = e.TabPage.Controls[0] as ucSend;
+            File.Delete(uc.WorkspacePath);
+            uc.WorkspacePath = string.Empty;
+        }
+    }
 }

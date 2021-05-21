@@ -19,10 +19,9 @@ namespace PaJaMa.WebRequestor
 	public partial class ucSend : UserControl
 	{
 		private BindingList<RequestResponse> _requestResponseHistory;
-		public int Index { get; set; }
-
-		private string settingsFile => $"RequestResponseHistory_{Index}";
+		public Workspace Workspace { get; set; }
 		private DebounceDispatcher _removeTimer = new DebounceDispatcher();
+		public string WorkspacePath { get; set; }
 
 		public ucSend()
 		{
@@ -35,8 +34,8 @@ namespace PaJaMa.WebRequestor
 			List<RequestResponse> requestResponseHistory;
 			try
 			{
-				requestResponseHistory = SettingsHelper.GetUserSettings<List<RequestResponse>>(settingsFile).OrderByDescending(r => r.RequestDate).ToList() ?? new List<RequestResponse>();
-				_requestResponseHistory = new BindingList<RequestResponse>(SettingsHelper.GetUserSettings<List<RequestResponse>>(settingsFile).OrderByDescending(r => r.RequestDate).ToList() ?? new List<RequestResponse>());
+				requestResponseHistory = Workspace.RequestResponses.OrderByDescending(r => r.RequestDate).ToList() ?? new List<RequestResponse>();
+				_requestResponseHistory = new BindingList<RequestResponse>(Workspace.RequestResponses.OrderByDescending(r => r.RequestDate).ToList() ?? new List<RequestResponse>());
 			}
 			catch
 			{
@@ -57,6 +56,7 @@ namespace PaJaMa.WebRequestor
 				txtRequestBody.Enabled = cboMethod.Text != "GET";
 				txtRequestBody.Text = first.RequestBody;
 				gridRequestHeaders.DataSource = new BindingList<Header>(first.RequestHeaders);
+				setTabText();
 			}
 			else
 			{
@@ -65,6 +65,11 @@ namespace PaJaMa.WebRequestor
 			gridRequestsResponses.DataSource = new BindingList<RequestResponse>(requestResponseHistory);
 			URL.Width = gridRequestsResponses.Width - StatusCode.Width - Method.Width - Duration.Width - 65;
 			gridRequestsResponses.AutoResizeColumns();
+		}
+
+		private void setTabText()
+        {
+			(this.Parent as PaJaMa.WinControls.TabControl.TabPage).Text = $"{txtURL.Text.Substring(0, Math.Min(txtURL.Text.Length, 20))}{(txtURL.Text.Length > 20 ? "..." : "")}";
 		}
 
 		private async void btnGO_Click(object sender, EventArgs e)
@@ -160,9 +165,11 @@ namespace PaJaMa.WebRequestor
 
 			gridRequestsResponses.Invalidate();
 			_requestResponseHistory.Insert(0, reqResp.Clone());
-			SettingsHelper.SaveUserSettings<List<RequestResponse>>(_requestResponseHistory.ToList(), settingsFile);
+			Workspace.RequestResponses = _requestResponseHistory.ToList();
+			File.WriteAllText(WorkspacePath, JsonConvert.SerializeObject(Workspace));
 
 			tabRequestResponse.SelectedTab = pageResponse;
+			setTabText();
 		}
 
 		private string PrintXML(string xml)
@@ -254,7 +261,8 @@ namespace PaJaMa.WebRequestor
 		{
 			_removeTimer.Debounce(100, new Action<object>((x) =>
 			{
-				SettingsHelper.SaveUserSettings<List<RequestResponse>>((gridRequestsResponses.DataSource as BindingList<RequestResponse>).ToList(), settingsFile);
+				if (string.IsNullOrEmpty(WorkspacePath)) return;
+				File.WriteAllText(WorkspacePath, JsonConvert.SerializeObject(Workspace));
 			}));
 		}
 
@@ -268,5 +276,10 @@ namespace PaJaMa.WebRequestor
 			if (gridRequestsResponses.Width > URL.Width + StatusCode.Width + Method.Width + Duration.Width)
 				URL.Width = gridRequestsResponses.Width - StatusCode.Width - Method.Width - Duration.Width - 65;
 		}
-	}
+
+        private void btnBasic64_Click(object sender, EventArgs e)
+        {
+			new frmBasicCreds64().Show();
+		}
+    }
 }
