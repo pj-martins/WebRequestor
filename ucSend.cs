@@ -14,6 +14,7 @@ using System.Xml;
 using System.IO;
 using PaJaMa.WinControls;
 using Newtonsoft.Json.Linq;
+using ScintillaNET;
 
 namespace PaJaMa.WebRequestor
 {
@@ -266,36 +267,66 @@ namespace PaJaMa.WebRequestor
 			new frmBasicCreds64().Show();
 		}
 
+		private void setFold()
+        {
+			txtResponse.SetProperty("fold", "1");
+			txtResponse.SetProperty("fold.compact", "1");
+
+			txtResponse.Margins[2].Type = MarginType.Symbol;
+			txtResponse.Margins[2].Mask = Marker.MaskFolders;
+			txtResponse.Margins[2].Sensitive = true;
+			txtResponse.Margins[2].Width = 20;
+
+			// Set colors for all folding markers
+			for (int i = 25; i <= 31; i++)
+			{
+				txtResponse.Markers[i].SetForeColor(SystemColors.ControlLightLight);
+				txtResponse.Markers[i].SetBackColor(SystemColors.ControlDark);
+			}
+
+			// Configure folding markers with respective symbols
+			txtResponse.Markers[Marker.Folder].Symbol = MarkerSymbol.BoxPlus;
+			txtResponse.Markers[Marker.FolderOpen].Symbol = MarkerSymbol.BoxMinus;
+			txtResponse.Markers[Marker.FolderEnd].Symbol = MarkerSymbol.BoxPlusConnected;
+			txtResponse.Markers[Marker.FolderMidTail].Symbol = MarkerSymbol.TCorner;
+			txtResponse.Markers[Marker.FolderOpenMid].Symbol = MarkerSymbol.BoxMinusConnected;
+			txtResponse.Markers[Marker.FolderSub].Symbol = MarkerSymbol.VLine;
+			txtResponse.Markers[Marker.FolderTail].Symbol = MarkerSymbol.LCorner;
+
+			// Enable automatic folding
+			txtResponse.AutomaticFold = (AutomaticFold.Show | AutomaticFold.Click | AutomaticFold.Change);
+		}
+
 		private void populateOutputControl(RequestResponse rr)
         {
-			splitResponse.Panel2.Controls.Clear();
+			// splitResponse.Panel2.Controls.Clear();
+			txtResponse.ReadOnly = false;
+			txtResponse.Lexer = Lexer.Container;
+			txtResponse.Text = rr.ResponseBody;
+			
 			try
 			{
 				var obj = JsonConvert.DeserializeObject(rr.ResponseBody, new JsonSerializerSettings() { MetadataPropertyHandling = MetadataPropertyHandling.Ignore });
-				if (rr.ResponseBody.Length > 3500000)
-				{
-					var txt = new RichTextBox();
-					txt.Dock = DockStyle.Fill;
-					txt.Text = JsonConvert.SerializeObject(obj, Newtonsoft.Json.Formatting.Indented);
-					splitResponse.Panel2.Controls.Add(txt);
-				}
-				else
-				{
-					var tv = new TreeView();
-					tv.Dock = DockStyle.Fill;
-                    tv.DoubleClick += Tv_DoubleClick;
-					populateTreeView(tv.Nodes, obj, string.Empty);
-					tv.ExpandAll();
-					splitResponse.Panel2.Controls.Add(tv);
-				}
+				txtResponse.Text = JsonConvert.SerializeObject(obj, Newtonsoft.Json.Formatting.Indented);
+				txtResponse.Lexer = Lexer.Json;
+				txtResponse.Styles[Style.Json.Default].ForeColor = Color.Silver;
+				txtResponse.Styles[Style.Json.BlockComment].ForeColor = Color.FromArgb(0, 128, 0); // Green
+				txtResponse.Styles[Style.Json.LineComment].ForeColor = Color.FromArgb(0, 128, 0); // Green
+				txtResponse.Styles[Style.Json.Number].ForeColor = Color.Olive;
+				txtResponse.Styles[Style.Json.PropertyName].ForeColor = Color.Blue;
+				txtResponse.Styles[Style.Json.String].ForeColor = Color.FromArgb(163, 21, 21); // Red
+				txtResponse.Styles[Style.Json.StringEol].BackColor = Color.Pink;
+				txtResponse.Styles[Style.Json.Operator].ForeColor = Color.Purple;
+				txtResponse.Colorize(0, txtResponse.Text.Length);
+				setFold();
 			}
 			catch
 			{
-				var txt = new RichTextBox();
-				txt.Dock = DockStyle.Fill;
-				txt.Text = PrintXML(rr.ResponseBody);
-				splitResponse.Panel2.Controls.Add(txt);
+				txtResponse.Text = PrintXML(rr.ResponseBody);
+				txtResponse.Lexer = Lexer.Xml;
+				setFold();
 			}
+			txtResponse.ReadOnly = true;
 		}
 
         private void Tv_DoubleClick(object sender, EventArgs e)

@@ -34,6 +34,7 @@
             this.txtURL = new System.Windows.Forms.TextBox();
             this.gridResponseHeaders = new System.Windows.Forms.DataGridView();
             this.splitResponse = new System.Windows.Forms.SplitContainer();
+            this.txtResponse = new ScintillaNET.Scintilla();
             this.pageResponse = new System.Windows.Forms.TabPage();
             this.txtRequestBody = new ScintillaNET.Scintilla();
             this.chkUseDefaultCredentials = new System.Windows.Forms.CheckBox();
@@ -55,6 +56,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.gridResponseHeaders)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitResponse)).BeginInit();
             this.splitResponse.Panel1.SuspendLayout();
+            this.splitResponse.Panel2.SuspendLayout();
             this.splitResponse.SuspendLayout();
             this.pageResponse.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridRequestHeaders)).BeginInit();
@@ -140,9 +142,21 @@
             // splitResponse.Panel1
             // 
             this.splitResponse.Panel1.Controls.Add(this.gridResponseHeaders);
+            // 
+            // splitResponse.Panel2
+            // 
+            this.splitResponse.Panel2.Controls.Add(this.txtResponse);
             this.splitResponse.Size = new System.Drawing.Size(567, 642);
             this.splitResponse.SplitterDistance = 216;
             this.splitResponse.TabIndex = 1;
+            // 
+            // txtResponse
+            // 
+            this.txtResponse.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtResponse.Location = new System.Drawing.Point(0, 0);
+            this.txtResponse.Name = "txtResponse";
+            this.txtResponse.Size = new System.Drawing.Size(567, 422);
+            this.txtResponse.TabIndex = 0;
             // 
             // pageResponse
             // 
@@ -339,6 +353,7 @@
             this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridResponseHeaders)).EndInit();
             this.splitResponse.Panel1.ResumeLayout(false);
+            this.splitResponse.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitResponse)).EndInit();
             this.splitResponse.ResumeLayout(false);
             this.pageResponse.ResumeLayout(false);
@@ -385,5 +400,6 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn RequestDate;
 		private System.Windows.Forms.DataGridViewTextBoxColumn ResponseLength;
         private System.Windows.Forms.Button btnBasic64;
+        private ScintillaNET.Scintilla txtResponse;
     }
 }
