@@ -52,6 +52,7 @@
             this.Duration = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.RequestDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ResponseLength = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.progMain = new System.Windows.Forms.ProgressBar();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridResponseHeaders)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitResponse)).BeginInit();
@@ -268,6 +269,7 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.gridRequestsResponses);
+            this.splitContainer1.Panel1.Controls.Add(this.progMain);
             // 
             // splitContainer1.Panel2
             // 
@@ -293,7 +295,7 @@
             this.gridRequestsResponses.Location = new System.Drawing.Point(0, 0);
             this.gridRequestsResponses.Name = "gridRequestsResponses";
             this.gridRequestsResponses.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gridRequestsResponses.Size = new System.Drawing.Size(446, 674);
+            this.gridRequestsResponses.Size = new System.Drawing.Size(446, 651);
             this.gridRequestsResponses.TabIndex = 0;
             this.gridRequestsResponses.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridRequestsResponses_CellDoubleClick);
             this.gridRequestsResponses.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.gridRequestsResponses_CellFormatting);
@@ -340,6 +342,15 @@
             this.ResponseLength.DataPropertyName = "ResponseLength";
             this.ResponseLength.HeaderText = "Length";
             this.ResponseLength.Name = "ResponseLength";
+            // 
+            // progMain
+            // 
+            this.progMain.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.progMain.Location = new System.Drawing.Point(0, 651);
+            this.progMain.Name = "progMain";
+            this.progMain.Size = new System.Drawing.Size(446, 23);
+            this.progMain.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.progMain.TabIndex = 2;
             // 
             // ucSend
             // 
@@ -402,5 +413,6 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn ResponseLength;
         private System.Windows.Forms.Button btnBasic64;
         private ScintillaNET.Scintilla txtResponse;
+        private System.Windows.Forms.ProgressBar progMain;
     }
 }

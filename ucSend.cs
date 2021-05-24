@@ -79,6 +79,10 @@ namespace PaJaMa.WebRequestor
 
 		private async void btnGO_Click(object sender, EventArgs e)
 		{
+			txtResponse.ReadOnly = false;
+			txtResponse.Lexer = Lexer.Container;
+			txtResponse.Text = string.Empty;
+			txtResponse.ReadOnly = true;
 			gridResponseHeaders.DataSource = new BindingList<Header>();
 			var reqResp = new RequestResponse();
 			reqResp.URL = txtURL.Text;
@@ -96,6 +100,7 @@ namespace PaJaMa.WebRequestor
 			HttpWebResponse response = null;
 			Exception exception = null;
 			DateTime? start = null;
+			progMain.Style = ProgressBarStyle.Marquee;
 			try
 			{
 				var req = WebRequest.Create(txtURL.Text) as HttpWebRequest;
@@ -133,6 +138,8 @@ namespace PaJaMa.WebRequestor
 			{
 				exception = ex;
 			}
+
+			progMain.Style = ProgressBarStyle.Continuous;
 
 			if (start != null)
 			{
