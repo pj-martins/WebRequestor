@@ -74,7 +74,7 @@ namespace PaJaMa.WebRequestor
 
 		private void setTabText()
         {
-			(this.Parent as PaJaMa.WinControls.TabControl.TabPage).Text = $"{txtURL.Text.Substring(0, Math.Min(txtURL.Text.Length, 20))}{(txtURL.Text.Length > 20 ? "..." : "")}";
+			(this.Parent as PaJaMa.WinControls.TabControl.TabPage).Text = txtURL.Text;
 		}
 
 		private async void btnGO_Click(object sender, EventArgs e)
@@ -317,6 +317,7 @@ namespace PaJaMa.WebRequestor
 			try
 			{
 				var obj = JsonConvert.DeserializeObject(rr.ResponseBody, new JsonSerializerSettings() { MetadataPropertyHandling = MetadataPropertyHandling.Ignore });
+				txtResponse.WrapMode = WrapMode.None;
 				txtResponse.Text = JsonConvert.SerializeObject(obj, Newtonsoft.Json.Formatting.Indented);
 				txtResponse.Lexer = Lexer.Json;
 				txtResponse.Styles[Style.Json.Default].ForeColor = Color.Silver;
@@ -332,8 +333,17 @@ namespace PaJaMa.WebRequestor
 			}
 			catch
 			{
+				txtResponse.WrapMode = WrapMode.Word;
 				txtResponse.Text = PrintXML(rr.ResponseBody);
 				txtResponse.Lexer = Lexer.Xml;
+				txtResponse.Styles[Style.Xml.Default].ForeColor = Color.Black;
+				txtResponse.Styles[Style.Xml.Comment].ForeColor = Color.FromArgb(0, 128, 0); // Green
+				txtResponse.Styles[Style.Xml.Number].ForeColor = Color.Olive;
+				txtResponse.Styles[Style.Xml.Tag].ForeColor = Color.Blue;
+				txtResponse.Styles[Style.Xml.TagEnd].ForeColor = Color.Blue;
+				txtResponse.Styles[Style.Xml.SingleString].ForeColor = Color.FromArgb(163, 21, 21); // Red
+				txtResponse.Styles[Style.Xml.DoubleString].ForeColor = Color.FromArgb(163, 21, 21); // Red
+				txtResponse.Colorize(0, txtResponse.Text.Length);
 				setFold();
 			}
 			txtResponse.ReadOnly = true;
