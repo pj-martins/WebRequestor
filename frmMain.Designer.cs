@@ -29,35 +29,17 @@
 		private void InitializeComponent()
 		{
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
-            this.tabPage1 = new PaJaMa.WinControls.TabControl.TabPage();
-            this.tabPage2 = new PaJaMa.WinControls.TabControl.TabPage();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabSendWorkspaces = new PaJaMa.WinControls.TabControl.TabControl();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.ucListen1 = new PaJaMa.WebRequestor.ucListen();
+            this.tabPage1 = new PaJaMa.WinControls.TabControl.TabPage();
+            this.tabPage2 = new PaJaMa.WinControls.TabControl.TabPage();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.IsSelected = false;
-            this.tabPage1.Location = new System.Drawing.Point(0, 0);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Size = new System.Drawing.Size(200, 100);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = null;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.IsSelected = false;
-            this.tabPage2.Location = new System.Drawing.Point(0, 0);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Size = new System.Drawing.Size(200, 100);
-            this.tabPage2.TabIndex = 0;
-            this.tabPage2.Text = null;
             // 
             // tabControl1
             // 
@@ -88,6 +70,7 @@
             this.tabSendWorkspaces.AllowRemove = true;
             this.tabSendWorkspaces.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabSendWorkspaces.Location = new System.Drawing.Point(3, 3);
+            this.tabSendWorkspaces.MaxTextLength = 30;
             this.tabSendWorkspaces.Name = "tabSendWorkspaces";
             this.tabSendWorkspaces.SelectedTab = null;
             this.tabSendWorkspaces.Size = new System.Drawing.Size(936, 604);
@@ -113,6 +96,24 @@
             this.ucListen1.Name = "ucListen1";
             this.ucListen1.Size = new System.Drawing.Size(936, 604);
             this.ucListen1.TabIndex = 0;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.IsSelected = false;
+            this.tabPage1.Location = new System.Drawing.Point(0, 0);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Size = new System.Drawing.Size(200, 100);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = null;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.IsSelected = false;
+            this.tabPage2.Location = new System.Drawing.Point(0, 0);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Size = new System.Drawing.Size(200, 100);
+            this.tabPage2.TabIndex = 0;
+            this.tabPage2.Text = null;
             // 
             // frmMain
             // 
