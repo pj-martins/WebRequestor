@@ -62,6 +62,7 @@ namespace PaJaMa.WebRequestor
             var tabPage = new WinControls.TabControl.TabPage();
             tabPage.Text = "Workspace " + (tabSendWorkspaces.TabPages.Count + 1).ToString();
             tabPage.ContextMenuStrip = new ContextMenuStrip();
+            tabPage.ContextMenuStrip.Items.Add("&Copy To Workspace", null, new EventHandler(this.copyToWorkspaceToolStripMenuItem_Click));
             uc.Dock = DockStyle.Fill;
             tabPage.Controls.Add(uc);
             tabSendWorkspaces.TabPages.Add(tabPage);
@@ -80,6 +81,21 @@ namespace PaJaMa.WebRequestor
             var uc = e.TabPage.Controls[0] as ucSend;
             File.Delete(uc.WorkspacePath);
             uc.WorkspacePath = string.Empty;
+        }
+
+        private void copyToWorkspaceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Workspace workspace = null;
+            var selectedTab = tabSendWorkspaces.SelectedTab;
+            if (selectedTab != null)
+            {
+                workspace = new Workspace()
+                {
+                    ID = Guid.NewGuid(),
+                    RequestResponses = (selectedTab.Controls[0] as ucSend).Workspace.RequestResponses.OrderByDescending(x => x.RequestDate).Take(1).ToList()
+                };
+            }
+            addSendWorkspace(workspace);
         }
     }
 }

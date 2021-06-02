@@ -31,9 +31,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.tabSendWorkspaces = new PaJaMa.WinControls.TabControl.TabControl();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.ucListen1 = new PaJaMa.WebRequestor.ucListen();
+            this.tabSendWorkspaces = new PaJaMa.WinControls.TabControl.TabControl();
             this.tabPage1 = new PaJaMa.WinControls.TabControl.TabPage();
             this.tabPage2 = new PaJaMa.WinControls.TabControl.TabPage();
             this.tabControl1.SuspendLayout();
@@ -64,20 +64,6 @@
             this.tabPage3.Text = "Send";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // tabSendWorkspaces
-            // 
-            this.tabSendWorkspaces.AllowAdd = true;
-            this.tabSendWorkspaces.AllowRemove = true;
-            this.tabSendWorkspaces.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabSendWorkspaces.Location = new System.Drawing.Point(3, 3);
-            this.tabSendWorkspaces.MaxTextLength = 30;
-            this.tabSendWorkspaces.Name = "tabSendWorkspaces";
-            this.tabSendWorkspaces.SelectedTab = null;
-            this.tabSendWorkspaces.Size = new System.Drawing.Size(936, 604);
-            this.tabSendWorkspaces.TabIndex = 0;
-            this.tabSendWorkspaces.TabClosing += new PaJaMa.WinControls.TabControl.TabEventHandler(this.tabSendWorkspaces_TabClosing);
-            this.tabSendWorkspaces.TabAdding += new PaJaMa.WinControls.TabControl.TabEventHandler(this.tabSendWorkspaces_TabAdding);
-            // 
             // tabPage4
             // 
             this.tabPage4.Controls.Add(this.ucListen1);
@@ -96,6 +82,20 @@
             this.ucListen1.Name = "ucListen1";
             this.ucListen1.Size = new System.Drawing.Size(936, 604);
             this.ucListen1.TabIndex = 0;
+            // 
+            // tabSendWorkspaces
+            // 
+            this.tabSendWorkspaces.AllowAdd = true;
+            this.tabSendWorkspaces.AllowRemove = true;
+            this.tabSendWorkspaces.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabSendWorkspaces.Location = new System.Drawing.Point(3, 3);
+            this.tabSendWorkspaces.MaxTextLength = 30;
+            this.tabSendWorkspaces.Name = "tabSendWorkspaces";
+            this.tabSendWorkspaces.SelectedTab = null;
+            this.tabSendWorkspaces.Size = new System.Drawing.Size(936, 604);
+            this.tabSendWorkspaces.TabIndex = 0;
+            this.tabSendWorkspaces.TabClosing += new PaJaMa.WinControls.TabControl.TabEventHandler(this.tabSendWorkspaces_TabClosing);
+            this.tabSendWorkspaces.TabAdding += new PaJaMa.WinControls.TabControl.TabEventHandler(this.tabSendWorkspaces_TabAdding);
             // 
             // tabPage1
             // 
@@ -143,6 +143,6 @@
 		private System.Windows.Forms.TabPage tabPage4;
 		private ucListen ucListen1;
 		private WinControls.TabControl.TabControl tabSendWorkspaces;
-	}
+    }
 }
 
