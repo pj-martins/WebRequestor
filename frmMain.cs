@@ -25,7 +25,9 @@ namespace PaJaMa.WebRequestor
         {
             FormSettings.LoadSettings(this);
 
-            var files = new DirectoryInfo(workspaceDirectory).GetFiles().Where(x => x.FullName.Contains("Workspace_")).OrderBy(c => c.CreationTime);
+			var dinf = new DirectoryInfo(workspaceDirectory);
+			if (!dinf.Exists) dinf.Create();
+			var files = dinf.GetFiles().Where(x => x.FullName.Contains("Workspace_")).OrderBy(c => c.CreationTime);
             foreach (var file in files)
             {
                 try
