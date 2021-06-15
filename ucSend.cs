@@ -21,7 +21,7 @@ namespace PaJaMa.WebRequestor
 {
 	public partial class ucSend : UserControl
 	{
-		private BindingList<RequestResponse> _requestResponseHistory;
+		private RequestResponse _current;
 		public Workspace Workspace { get; set; }
 		private DebounceDispatcher _removeTimer = new DebounceDispatcher();
 		public string WorkspacePath { get; set; }
@@ -40,12 +40,10 @@ namespace PaJaMa.WebRequestor
 			try
 			{
 				requestResponseHistory = Workspace.RequestResponses.OrderByDescending(r => r.RequestDate).ToList() ?? new List<RequestResponse>();
-				_requestResponseHistory = new BindingList<RequestResponse>(Workspace.RequestResponses.OrderByDescending(r => r.RequestDate).ToList() ?? new List<RequestResponse>());
 			}
 			catch
 			{
 				requestResponseHistory = new List<RequestResponse>();
-				_requestResponseHistory = new BindingList<RequestResponse>();
 			}
 			foreach (var rh in requestResponseHistory)
 			{
@@ -54,13 +52,13 @@ namespace PaJaMa.WebRequestor
 
 			if (requestResponseHistory.Any())
 			{
-				var first = requestResponseHistory.First();
-				txtURL.Text = first.URL;
-				cboMethod.Text = first.Method;
-				chkUseDefaultCredentials.Checked = first.UseDefaultCredentials;
+				_current = requestResponseHistory.First().Clone();
+				txtURL.Text = _current.URL;
+				cboMethod.Text = _current.Method;
+				chkUseDefaultCredentials.Checked = _current.UseDefaultCredentials;
 				txtRequestBody.Enabled = cboMethod.Text != "GET";
-				txtRequestBody.Text = first.RequestBody;
-				gridRequestHeaders.DataSource = new BindingList<Header>(first.RequestHeaders);
+				txtRequestBody.Text = _current.RequestBody;
+				gridRequestHeaders.DataSource = new BindingList<Header>(_current.RequestHeaders);
 				setTabText();
 			}
 			else
@@ -112,7 +110,7 @@ namespace PaJaMa.WebRequestor
 				foreach (DataGridViewRow hdr in gridRequestHeaders.Rows)
 				{
 					if (hdr.DataBoundItem == null) continue;
-					var header = hdr.DataBoundItem as Header;
+					var header = (hdr.DataBoundItem as Header).Clone();
 					reqResp.RequestHeaders.Add(header);
 					if (header.Name.ToLower() == "content-type")
 						req.ContentType = header.Value;
@@ -164,12 +162,12 @@ namespace PaJaMa.WebRequestor
 				gridResponseHeaders.DataSource = reqResp.ResponseHeaders;
 			}
 
-			populateOutputControl(reqResp);
-
 			gridRequestsResponses.Invalidate();
-			_requestResponseHistory.Insert(0, reqResp.Clone());
-			Workspace.RequestResponses = _requestResponseHistory.ToList();
+			Workspace.RequestResponses.Insert(0, reqResp);
 			File.WriteAllText(WorkspacePath, JsonConvert.SerializeObject(Workspace));
+			_current = reqResp.Clone();
+			duplicate(_current);
+			populateOutputControl(_current);
 
 			tabRequestResponse.SelectedTab = pageResponse;
 			setTabText();
@@ -222,15 +220,8 @@ namespace PaJaMa.WebRequestor
 		{
 			if (e.RowIndex >= 0)
 			{
-				var rr = gridRequestsResponses.Rows[e.RowIndex].DataBoundItem as RequestResponse;
-
-				txtURL.Text = rr.URL;
-				cboMethod.Text = rr.Method;
-				chkUseDefaultCredentials.Checked = rr.UseDefaultCredentials;
-				gridRequestHeaders.DataSource = new BindingList<Header>(rr.RequestHeaders);
-				gridResponseHeaders.DataSource = rr.ResponseHeaders;
-				txtRequestBody.Text = rr.RequestBody;
-				populateOutputControl(rr);
+				var dup = (gridRequestsResponses.Rows[e.RowIndex].DataBoundItem as RequestResponse).Clone();
+				duplicate(dup);
 			}
 		}
 
@@ -445,6 +436,17 @@ namespace PaJaMa.WebRequestor
 				MyGoTo.ShowGoToDialog();
 				e.SuppressKeyPress = true;
 			}
+		}
+
+        private void duplicate(RequestResponse rr)
+        {
+			txtURL.Text = rr.URL;
+			cboMethod.Text = rr.Method;
+			chkUseDefaultCredentials.Checked = rr.UseDefaultCredentials;
+			gridRequestHeaders.DataSource = new BindingList<Header>(rr.RequestHeaders);
+			gridResponseHeaders.DataSource = rr.ResponseHeaders;
+			txtRequestBody.Text = rr.RequestBody;
+			populateOutputControl(rr);
 		}
     }
 }
