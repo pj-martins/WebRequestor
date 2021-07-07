@@ -70,6 +70,15 @@ namespace PaJaMa.WebRequestor
 			gridRequestsResponses.AutoResizeColumns();
 		}
 
+		private void writeResponse(RequestResponse requestResponse, string response)
+        {
+			if (!Directory.Exists(WorkspacePath))
+            {
+				Directory.CreateDirectory(WorkspacePath);
+            }
+			File.WriteAllText(Path.Combine(WorkspacePath, requestResponse.ResponseID.ToString()), response);
+        }
+
 		private void setTabText()
         {
 			(this.Parent as PaJaMa.WinControls.TabControl.TabPage).Text = txtURL.Text;
@@ -147,13 +156,12 @@ namespace PaJaMa.WebRequestor
 			if (exception != null)
 			{
 				reqResp.StatusCode = 0;
-				reqResp.ResponseBody = exception.Message;
+				writeResponse(reqResp, exception.Message);
 			}
 			else if (response != null)
 			{
 				reqResp.StatusCode = (int)response.StatusCode;
-				// reqResp.Body = response.StatusDescription;
-				reqResp.ResponseBody = Common.Common.GetStringFromStream(response.GetResponseStream()).Trim('\0').Trim();
+				writeResponse(reqResp, Common.Common.GetStringFromStream(response.GetResponseStream()).Trim('\0').Trim());
 				foreach (var k in response.Headers.AllKeys)
 				{
 					reqResp.ResponseHeaders.Add(new Header() { Name = k, Value = response.Headers[k] });
@@ -164,7 +172,7 @@ namespace PaJaMa.WebRequestor
 
 			gridRequestsResponses.Invalidate();
 			Workspace.RequestResponses.Insert(0, reqResp);
-			File.WriteAllText(WorkspacePath, JsonConvert.SerializeObject(Workspace));
+			File.WriteAllText(WorkspacePath + ".json", JsonConvert.SerializeObject(Workspace));
 			_current = reqResp.Clone();
 			duplicate(_current);
 			populateOutputControl(_current);
@@ -248,7 +256,7 @@ namespace PaJaMa.WebRequestor
 			_removeTimer.Debounce(100, new Action<object>((x) =>
 			{
 				if (string.IsNullOrEmpty(WorkspacePath)) return;
-				File.WriteAllText(WorkspacePath, JsonConvert.SerializeObject(Workspace));
+				File.WriteAllText(WorkspacePath + ".json", JsonConvert.SerializeObject(Workspace));
 			}));
 		}
 
@@ -303,11 +311,15 @@ namespace PaJaMa.WebRequestor
 			// splitResponse.Panel2.Controls.Clear();
 			txtResponse.ReadOnly = false;
 			txtResponse.Lexer = Lexer.Container;
-			txtResponse.Text = rr.ResponseBody;
+			var finf = new FileInfo(Path.Combine(WorkspacePath, rr.ResponseID.ToString()));
+			if (finf.Exists)
+			{
+				txtResponse.Text = File.ReadAllText(finf.FullName);
+			}
 			
 			try
 			{
-				var obj = JsonConvert.DeserializeObject(rr.ResponseBody, new JsonSerializerSettings() { MetadataPropertyHandling = MetadataPropertyHandling.Ignore });
+				var obj = JsonConvert.DeserializeObject(txtResponse.Text, new JsonSerializerSettings() { MetadataPropertyHandling = MetadataPropertyHandling.Ignore });
 				txtResponse.WrapMode = WrapMode.None;
 				txtResponse.Text = JsonConvert.SerializeObject(obj, Newtonsoft.Json.Formatting.Indented);
 				txtResponse.Lexer = Lexer.Json;
@@ -325,7 +337,7 @@ namespace PaJaMa.WebRequestor
 			catch
 			{
 				txtResponse.WrapMode = WrapMode.Word;
-				txtResponse.Text = PrintXML(rr.ResponseBody);
+				txtResponse.Text = PrintXML(txtResponse.Text);
 				txtResponse.Lexer = Lexer.Xml;
 				txtResponse.Styles[Style.Xml.Default].ForeColor = Color.Black;
 				txtResponse.Styles[Style.Xml.Comment].ForeColor = Color.FromArgb(0, 128, 0); // Green

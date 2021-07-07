@@ -26,19 +26,14 @@ namespace PaJaMa.WebRequestor.Classes
 		public List<Header> RequestHeaders { get; set; }
 		public List<Header> ResponseHeaders { get; set; }
 		public string RequestBody { get; set; }
-		public string ResponseBody { get; set; }
+		public Guid ResponseID { get; set; }
 		public int Duration { get; set; }
-
-		[XmlIgnore]
-		public double ResponseLength
-		{
-			get { return string.IsNullOrEmpty(ResponseBody) ? 0 : ResponseBody.Length; }
-		}
 
 		public RequestResponse()
 		{
 			RequestHeaders = new List<Header>();
 			ResponseHeaders = new List<Header>();
+			ResponseID = Guid.NewGuid();
 		}
 
 		public RequestResponse Clone()
@@ -53,7 +48,7 @@ namespace PaJaMa.WebRequestor.Classes
 				RequestHeaders = this.RequestHeaders.Select(r => r.Clone()).ToList(),
 				ResponseHeaders = this.ResponseHeaders.Select(r => r.Clone()).ToList(),
 				RequestBody = this.RequestBody,
-				ResponseBody = this.ResponseBody,
+				ResponseID = this.ResponseID,
 				Duration = this.Duration
 			};
 		}
