@@ -81,7 +81,8 @@ namespace PaJaMa.WebRequestor
         private void tabSendWorkspaces_TabClosing(object sender, WinControls.TabControl.TabEventArgs e)
         {
             var uc = e.TabPage.Controls[0] as ucSend;
-            File.Delete(uc.WorkspacePath);
+            Directory.Delete(uc.WorkspacePath, true);
+            File.Delete(uc.WorkspacePath + ".json");
             uc.WorkspacePath = string.Empty;
         }
 
